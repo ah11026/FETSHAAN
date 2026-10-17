@@ -1,0 +1,66 @@
+:root { font-family: 'IBM Plex Sans Arabic', sans-serif; color: #f3f1e8; background: #161715; font-synthesis: none; --paper: #f3f1e8; --muted: #a4a69c; --orange: #f15a38; --lime: #b2df59; }
+* { box-sizing: border-box; }
+html, body { width: 100%; min-height: 100%; margin: 0; overscroll-behavior: none; }
+body { min-height: 100dvh; background: radial-gradient(#ffffff0c .7px, transparent .7px) 0 0 / 17px 17px, #161715; touch-action: none; user-select: none; -webkit-user-select: none; }
+button, input { font: inherit; }
+.join-screen { min-height: 100dvh; padding: max(24px, env(safe-area-inset-top)) 8vw max(22px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; justify-content: space-between; }
+.controller-brand { display: inline-flex; width: fit-content; align-items: center; gap: 10px; color: var(--paper); text-decoration: none; font-size: 17px; font-weight: 700; }
+.brand-mark { width: 31px; height: 31px; display: grid; place-items: center; color: #161715; background: var(--lime); border-radius: 9px 9px 9px 2px; font-size: 18px; }
+.controller-brand small { margin-inline-start: 4px; color: #a4a69c; font: 600 9px sans-serif; }
+.join-content { width: min(100%, 370px); margin: auto; padding-block: 48px; animation: rise .45s ease-out both; }
+.join-spark { color: var(--lime); font-size: 27px; }
+.eyebrow { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+.join-content h1 { margin: 4px 0 9px; color: var(--paper); font-size: 53px; line-height: 1.24; font-weight: 500; }
+.join-description { max-width: 280px; margin: 0 0 29px; color: #a4a69c; font-size: 13px; line-height: 1.9; }
+.join-content label { display: block; margin-bottom: 7px; color: #d3d4cb; font-size: 11px; }
+.name-row { display: flex; gap: 8px; }
+.name-row input { width: 100%; min-width: 0; height: 51px; padding: 0 14px; color: var(--paper); background: #242521; border: 1px solid #464740; border-radius: 4px; outline: none; font-size: 14px; }
+.name-row input:focus { border-color: var(--lime); }
+.name-row input::placeholder { color: #777970; }
+.name-row button { width: 52px; height: 51px; flex: 0 0 52px; color: #161715; background: var(--lime); border: 0; border-radius: 4px; cursor: pointer; font-size: 22px; }
+.name-row button:disabled { opacity: .45; cursor: wait; }
+.join-status { min-height: 18px; margin: 12px 0 0; color: #a4a69c; font-size: 11px; }
+.join-footer { color: #777970; font-size: 10px; }
+.gamepad { display: none; min-height: 100dvh; padding: max(15px, env(safe-area-inset-top)) 22px max(13px, env(safe-area-inset-bottom)); flex-direction: column; justify-content: space-between; overflow: hidden; }
+.gamepad.active { display: flex; animation: rise .25s ease-out both; }
+.pad-header, .pad-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pad-header .controller-brand { font-size: 14px; }.pad-header .brand-mark { width: 27px; height: 27px; font-size: 15px; }
+.player-badge { display: flex; align-items: center; gap: 7px; color: #cccec4; font-size: 11px; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); }
+.pad-body { width: min(100%, 730px); margin: auto; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.pad-cluster { display: flex; flex-direction: column; align-items: center; }
+.cluster-label { margin-bottom: 13px; color: #84867c; font-size: 10px; }
+.dpad { width: 174px; height: 174px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 5px; }
+.direction, .dpad-center { display: grid; place-items: center; }
+.direction { color: #d7d8cf; background: #2a2b27; border: 1px solid #3a3b35; border-radius: 8px; font-size: 17px; box-shadow: 0 4px 0 #10110f; }
+.direction:active, .direction.pressed { color: #161715; background: var(--lime); border-color: var(--lime); transform: translateY(2px); box-shadow: 0 2px 0 #718d3a; }
+.up { grid-area: 1 / 2; }.left { grid-area: 2 / 1; }.dpad-center { grid-area: 2 / 2; color: #777970; }.right { grid-area: 2 / 3; }.down { grid-area: 3 / 2; }
+.small-buttons { display: flex; gap: 12px; margin-top: 25px; }
+.small-buttons button { min-width: 73px; height: 27px; color: #a4a69c; background: #272824; border: 1px solid #3b3c36; border-radius: 20px; font: 600 8px sans-serif; letter-spacing: 0; }
+.small-buttons button:active, .small-buttons button.pressed { color: var(--lime); border-color: var(--lime); }
+.shoulders { width: 100%; display: flex; justify-content: space-between; margin-bottom: 21px; }
+.shoulders button { width: 57px; height: 34px; color: #d5d5ca; background: #292a26; border: 1px solid #3d3e38; border-radius: 8px 8px 3px 3px; font: 600 11px sans-serif; }
+.shoulders button:active, .shoulders button.pressed { color: #161715; background: var(--orange); border-color: var(--orange); }
+.face-pad { width: 182px; height: 182px; position: relative; display: grid; place-items: center; }
+.face { width: 63px; height: 63px; position: absolute; color: #191a17; border: 0; border-radius: 50%; font: 700 17px sans-serif; box-shadow: 0 5px 0 #0c0d0b, inset 0 1px #ffffff55; }
+.face:active, .face.pressed { transform: translateY(3px) scale(.97); box-shadow: 0 2px 0 #0c0d0b, inset 0 1px #ffffff55; }
+.face-x { top: 0; left: 50%; background: #75a8bf; transform: translateX(-50%); }.face-x:active, .face-x.pressed { transform: translate(-50%, 3px) scale(.97); }
+.face-y { top: 50%; left: 0; background: #e39a69; transform: translateY(-50%); }.face-y:active, .face-y.pressed { transform: translateY(calc(-50% + 3px)) scale(.97); }
+.face-b { top: 50%; right: 0; background: #e78479; transform: translateY(-50%); }.face-b:active, .face-b.pressed { transform: translateY(calc(-50% + 3px)) scale(.97); }
+.face-a { bottom: 0; left: 50%; background: var(--lime); transform: translateX(-50%); }.face-a:active, .face-a.pressed { transform: translate(-50%, 3px) scale(.97); }
+.pad-footer { color: #777970; font-size: 9px; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 390px) { .gamepad { padding-inline: 15px; }.pad-body { gap: 9px; }.dpad { width: 150px; height: 150px; }.face-pad { width: 154px; height: 154px; }.face { width: 57px; height: 57px; }.small-buttons button { min-width: 65px; } }
+@media (max-height: 580px) and (orientation: landscape) { .gamepad { padding-top: max(8px, env(safe-area-inset-top)); padding-bottom: max(8px, env(safe-area-inset-bottom)); }.pad-header .controller-brand { font-size: 12px; }.pad-header .brand-mark { width: 22px; height: 22px; }.pad-body { width: min(100%, 650px); }.dpad { width: 132px; height: 132px; }.face-pad { width: 139px; height: 139px; }.face { width: 48px; height: 48px; }.cluster-label { margin-bottom: 4px; }.small-buttons { margin-top: 10px; }.shoulders { margin-bottom: 7px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+.movement-modes { width: 174px; margin: -5px 0 9px; padding: 3px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; background: #22231f; border-radius: 4px; }
+.movement-modes button { min-height: 27px; color: #92948a; background: transparent; border: 0; border-radius: 3px; font-size: 9px; }
+.movement-modes button.active { color: #171815; background: var(--lime); }
+.dpad[hidden], .analog-stick[hidden] { display: none; }
+.analog-stick { width: 174px; height: 174px; position: relative; overflow: hidden; touch-action: none; border: 1px solid #484a40; border-radius: 50%; background: radial-gradient(circle, #34362e 0 34%, #292a25 35% 66%, #20211e 67%); box-shadow: inset 0 0 0 7px #ffffff05; }
+.stick-ring { position: absolute; inset: 27%; border: 1px solid #ffffff16; border-radius: 50%; }
+.stick-knob { width: 60px; height: 60px; position: absolute; top: 50%; left: 50%; border: 1px solid #d4e7a680; border-radius: 50%; background: #b2df5938; box-shadow: 0 3px 10px #0008, inset 0 1px #ffffff55; pointer-events: none; }
+.secondary-shoulders { margin-top: -13px; margin-bottom: 14px; }
+.stick-buttons { margin-top: 12px; }
+@media (max-width: 390px) { .movement-modes { width: 150px; }.analog-stick { width: 150px; height: 150px; } }
+@media (max-height: 580px) and (orientation: landscape) { .movement-modes { width: 132px; }.analog-stick { width: 132px; height: 132px; } }
