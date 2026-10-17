@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#161715">
+  <title>كلاي | وحدة التحكم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/controller.css">
+</head>
+<body>
+  <section class="join-screen" id="join">
+    <a class="controller-brand" href="/"><span class="brand-mark">ك</span><span>كلاي <small>/ PLAYER</small></span></a>
+    <div class="join-content">
+      <span class="join-spark">✳</span>
+      <p class="eyebrow">وحدة التحكم</p>
+      <h1>مكانك<br>جاهز.</h1>
+      <p class="join-description">أدخل اسمك وانضم إلى أصحابك. جوالك هو يد التحكم.</p>
+      <label for="name">اسم اللاعب</label>
+      <div class="name-row"><input id="name" maxlength="24" autocomplete="nickname" placeholder="مثال: نورة"><button id="joinButton" type="button" aria-label="انضم إلى الغرفة">←</button></div>
+      <p class="join-status" id="status">جارٍ الاتصال بالخادم...</p>
+    </div>
+    <span class="join-footer">لا حاجة إلى تنزيل تطبيق</span>
+  </section>
+
+  <main class="gamepad" id="pad" aria-label="وحدة تحكم اللعبة">
+    <header class="pad-header"><a class="controller-brand" href="/"><span class="brand-mark">ك</span><span>كلاي <small>/ PLAYER</small></span></a><div class="player-badge"><span class="live-dot"></span><span id="playerLabel">اللاعب</span></div></header>
+    <div class="pad-body">
+      <section class="pad-cluster movement-cluster" aria-label="أزرار الاتجاهات">
+        <div class="cluster-label">تحرك</div>
+        <div class="movement-modes" role="group" aria-label="طريقة الحركة">
+          <button class="active" type="button" data-move-mode="dpad" aria-pressed="true">اتجاهات</button>
+          <button type="button" data-move-mode="stick" aria-pressed="false">عصا</button>
+        </div>
+        <div class="dpad" id="dpad">
+          <button class="direction up" data-button="up" aria-label="أعلى">▲</button>
+          <button class="direction left" data-button="left" aria-label="يسار">◀</button>
+          <span class="dpad-center">✳</span>
+          <button class="direction right" data-button="right" aria-label="يمين">▶</button>
+          <button class="direction down" data-button="down" aria-label="أسفل">▼</button>
+        </div>
+        <div class="analog-stick" id="leftStick" hidden aria-label="العصا التناظرية اليسرى">
+          <span class="stick-ring"></span><span class="stick-knob" id="stickKnob"></span>
+        </div>
+        <div class="small-buttons"><button data-button="select">SELECT</button><button data-button="start">START</button></div>
+      </section>
+
+      <section class="pad-cluster action-cluster" aria-label="أزرار الحركة">
+        <div class="shoulders"><button data-button="l1">L</button><button data-button="r1">R</button></div>
+        <div class="shoulders secondary-shoulders"><button data-button="l2">L2</button><button data-button="r2">R2</button></div>
+        <div class="cluster-label">نفّذ</div>
+        <div class="face-pad">
+          <button class="face face-x" data-button="x" aria-label="X">X</button>
+          <button class="face face-y" data-button="y" aria-label="Y">Y</button>
+          <button class="face face-b" data-button="b" aria-label="B">B</button>
+          <button class="face face-a" data-button="a" aria-label="A">A</button>
+        </div>
+        <div class="small-buttons stick-buttons"><button data-button="l3">L3</button><button data-button="r3">R3</button></div>
+      </section>
+    </div>
+    <footer class="pad-footer"><span id="padStatus">متصل بالغرفة</span><span>اضغط باستمرار أو حرّك العصا</span></footer>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/js/controller.js"></script>
+</body>
+</html>

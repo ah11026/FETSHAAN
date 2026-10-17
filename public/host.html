@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f1f0e9">
+  <title>كلاي | صالة اللعب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/host.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="كلاي، الصفحة الرئيسية"><span class="brand-mark">ك</span><span>كلاي<span class="brand-en"> / PLAY TOGETHER</span></span></a>
+    <div class="connection"><span class="live-dot" id="connectionDot"></span><span id="connectionLabel">جارٍ الاتصال</span></div>
+  </header>
+
+  <main class="host-layout">
+    <section class="stage-column" aria-label="منطقة اللعب">
+      <div class="stage-heading">
+        <div><p class="eyebrow">صالة اللعب</p><h1>اللعب أحلى <span>مع بعض.</span></h1></div>
+        <div class="room-chip"><span>الغرفة</span><strong id="roomCode">······</strong></div>
+      </div>
+
+      <div class="emulator-frame">
+        <div class="frame-top"><span class="frame-label"><span class="live-dot"></span> شاشة اللعب</span><span class="frame-size">16 : 9</span></div>
+        <div class="emulator-screen" id="gameScreen">
+          <div class="screen-orbit orbit-one"></div><div class="screen-orbit orbit-two"></div>
+          <div class="screen-content">
+            <span class="screen-icon">✳</span>
+            <p class="screen-kicker">جاهزون؟</p>
+            <h2>اختروا نظام اللعب<br>وابدؤوا من هنا</h2>
+            <p class="screen-note" id="gameStatus">المحاكي وملفات الألعاب تُضاف بشكل مستقل.</p>
+          </div>
+          <div class="input-readout" id="inputReadout" aria-live="polite">بانتظار أزرار اللاعبين</div>
+          <iframe id="emulatorFrame" title="محاكي اللعبة" hidden allow="autoplay; fullscreen" referrerpolicy="no-referrer" allowfullscreen></iframe>
+        </div>
+        <div class="stage-footer"><span>إدخال مباشر</span><span class="latency-indicator"><i></i><i></i><i></i><i></i></span><span>اتصال محلي</span></div>
+      </div>
+
+      <section class="systems-section">
+        <div class="section-heading"><div><p class="eyebrow">مكتبة الأنظمة</p><h2>وش نلعب؟</h2></div><span class="small-note">اختر نظامك لتجهيز مساحة اللعب</span></div>
+        <div class="system-grid">
+          <button class="system-item selected" data-system="NES" data-core="nes"><span class="system-number">01</span><span class="system-name">Nintendo <b>NES</b></span><span class="system-status">EmulatorJS · fceumm <i>↗</i></span></button>
+          <button class="system-item" data-system="SNES" data-core="snes"><span class="system-number">02</span><span class="system-name">Super <b>Nintendo</b></span><span class="system-status">EmulatorJS · snes9x <i>↗</i></span></button>
+          <button class="system-item" data-system="N64" data-core="n64"><span class="system-number">03</span><span class="system-name">Nintendo <b>64</b></span><span class="system-status">EmulatorJS · mupen64plus <i>↗</i></span></button>
+          <button class="system-item" data-system="PS1" data-core="psx"><span class="system-number">04</span><span class="system-name">PlayStation <b>1</b></span><span class="system-status">EmulatorJS · pcsx_rearmed <i>↗</i></span></button>
+          <button class="system-item" data-system="NDS" data-core="nds"><span class="system-number">05</span><span class="system-name">Nintendo <b>DS</b></span><span class="system-status">EmulatorJS · melonDS <i>↗</i></span></button>
+          <div class="system-item system-unavailable" aria-disabled="true"><span class="system-number">06</span><span class="system-name">PlayStation <b>2</b></span><span class="system-status">غير مدعوم في مشغل الويب حالياً</span></div>
+        </div>
+      </section>
+
+      <section class="library-section" aria-labelledby="libraryTitle">
+        <div class="section-heading library-heading">
+          <div><p class="eyebrow">ملفات في مستودعك</p><h2 id="libraryTitle">مكتبة الألعاب</h2></div>
+          <button class="icon-button" id="refreshLibrary" type="button" title="تحديث المكتبة" aria-label="تحديث المكتبة">↻</button>
+        </div>
+        <ul class="library-list" id="libraryList" aria-live="polite"><li class="library-empty">جارٍ تحميل المكتبة...</li></ul>
+        <details class="library-manager">
+          <summary>إضافة لعبة إلى المستودع</summary>
+          <div class="manager-body">
+            <label class="field full-field">مفتاح إدارة المكتبة
+              <input id="libraryKey" type="password" autocomplete="off" placeholder="مفتاح الإدارة الذي ضبطته في Render">
+            </label>
+            <div class="library-modes" role="group" aria-label="طريقة إضافة اللعبة">
+              <button class="active" type="button" data-library-mode="upload" aria-pressed="true">رفع من الجهاز</button>
+              <button type="button" data-library-mode="import" aria-pressed="false">استيراد من GitHub</button>
+            </div>
+            <div class="form-grid">
+              <label class="field">اسم اللعبة<input id="gameName" maxlength="80" required placeholder="اسم اللعبة"></label>
+              <label class="field">النظام
+                <select id="gameSystem"><option value="nes">NES</option><option value="snes">SNES</option><option value="n64">Nintendo 64</option><option value="psx">PlayStation 1</option><option value="nds">Nintendo DS</option></select>
+              </label>
+              <label class="field">الترخيص<input id="gameLicense" maxlength="100" required placeholder="مثال: MIT أو CC BY 4.0"></label>
+              <label class="field">رابط نص الترخيص<input id="gameLicenseUrl" type="url" required placeholder="https://..."></label>
+            </div>
+            <div class="library-source-panel" id="uploadPanel">
+              <label class="field full-field">ملف اللعبة (حتى 250 ميغابايت)
+                <input id="gameFile" type="file" accept=".nes,.sfc,.smc,.n64,.z64,.v64,.bin,.cue,.iso,.chd,.pbp,.nds">
+              </label>
+              <button class="primary-action" id="uploadGame" type="button">رفع وحفظ في GitHub</button>
+            </div>
+            <div class="library-source-panel" id="importPanel" hidden>
+              <div class="form-grid source-fields">
+                <label class="field">المستودع<input id="sourceRepository" placeholder="owner/repository"></label>
+                <label class="field">الفرع<input id="sourceBranch" value="main"></label>
+                <label class="field full-field">مسار الملف داخل المستودع<input id="sourcePath" placeholder="releases/homebrew.nes"></label>
+              </div>
+              <button class="primary-action" id="importGame" type="button">استيراد الملف إلى مستودعي</button>
+            </div>
+            <p class="library-status" id="libraryStatus" role="status" aria-live="polite"></p>
+            <p class="library-security-note">استخدم ملفات مسموحاً لك بإعادة توزيعها. يُحفظ مفتاح الإدارة في الذاكرة المؤقتة لهذه الصفحة فقط.</p>
+          </div>
+        </details>
+      </section>
+    </section>
+
+    <aside class="side-column">
+      <section class="join-panel">
+        <div class="join-panel-top"><span class="eyebrow">انضم إلى الجولة</span><span class="join-count"><b id="playerCount">0</b> / 4</span></div>
+        <h2>خلّ أصحابك<br>يدخلون اللعب.</h2>
+        <p class="join-copy">امسح الرمز بكاميرا جوالك، واختر اسمك. بدون تحميل تطبيق.</p>
+        <div class="qr-wrap"><div class="qr-grid"></div><img id="qr" alt="رمز QR للانضمام إلى الغرفة"><span class="qr-corner corner-a"></span><span class="qr-corner corner-b"></span><span class="qr-corner corner-c"></span><span class="qr-corner corner-d"></span></div>
+        <p class="qr-help" id="qrStatus">جارٍ تجهيز رمز الانضمام...</p>
+        <div class="room-link"><span id="joinUrl">بانتظار إنشاء الغرفة</span><button id="copyLink" type="button" title="نسخ رابط الانضمام" aria-label="نسخ رابط الانضمام">⧉</button></div>
+      </section>
+
+      <section class="players-panel">
+        <div class="section-heading compact"><div><p class="eyebrow">على الكنبة</p><h2>اللاعبون</h2></div><span class="player-total" id="playerTotal">0</span></div>
+        <ul class="player-list" id="players"><li class="empty-player"><span class="empty-plus">+</span><span>أول لاعب له مكان هنا</span></li></ul>
+      </section>
+
+      <p class="legal-note"><span>i</span> تُوجَّه أزرار كل هاتف إلى مقعد اللاعب المقابل في EmulatorJS؛ دعم عدد اللاعبين يعتمد على اللعبة والنواة.</p>
+    </aside>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/js/host.js"></script>
+</body>
+</html>
