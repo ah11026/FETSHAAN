@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, open, readFile, rename, unlink, writeFile } from "node:fs/promises";
+import { mkdir, open, readFile, readdir, rename, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { GAME_SYSTEMS, gameLibraryValidation } from "./game-library.js";
@@ -29,6 +29,12 @@ export class LocalGameLibrary {
     if (this.games) return;
     this.initializing = (async () => {
       await mkdir(this.directory, { recursive: true });
+      const entries = await readdir(this.directory, { withFileTypes: true });
+      const abandonedFiles = entries.filter(entry => entry.isFile() && (
+        /^\.upload-[0-9a-f-]{36}$/.test(entry.name) ||
+        /^catalog\.json\.[0-9a-f-]{36}\.tmp$/.test(entry.name)
+      ));
+      await Promise.all(abandonedFiles.map(entry => unlink(path.join(this.directory, entry.name))));
       try {
         const catalog = JSON.parse(await readFile(this.catalogPath, "utf8"));
         if (!Array.isArray(catalog)) fail("فهرس الألعاب المحلي غير صالح", 500);

@@ -1,4 +1,5 @@
-const CACHE_NAME = "klai-offline-v1";
+const CACHE_NAME = "klai-offline-v2";
+const MAX_CACHED_GAME_BYTES = 128 * 1024 * 1024;
 const SHELL = [
   "/",
   "/host.html",
@@ -36,7 +37,23 @@ self.addEventListener("fetch", event => {
   const url = new URL(request.url);
   if (request.method !== "GET" || url.origin !== self.location.origin) return;
 
-  if (url.pathname === "/api/games" || url.pathname.startsWith("/emulator-data/") || /^\/api\/games\/[a-f0-9-]+\/download$/.test(url.pathname)) {
+  if (url.pathname.startsWith("/emulator-data/")) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const cached = await cache.match(request);
+      if (cached) return cached;
+      try {
+        const response = await fetch(request);
+        if (response.ok) await cache.put(request, response.clone()).catch(() => {});
+        return response;
+      } catch {
+        return Response.error();
+      }
+    })());
+    return;
+  }
+
+  if (url.pathname === "/api/games") {
     event.respondWith((async () => {
       const cache = await caches.open(CACHE_NAME);
       try {

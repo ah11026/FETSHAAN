@@ -3,6 +3,7 @@ import http from "node:http";
 import os from "node:os";
 import path from "node:path";
 import { createReadStream } from "node:fs";
+import { stat } from "node:fs/promises";
 import { Readable } from "node:stream";
 import { fileURLToPath } from "node:url";
 import { Server } from "socket.io";
@@ -35,7 +36,9 @@ app.use("/emulator-data", async (request, response) => {
     return response.sendStatus(400);
   }
   try {
-    const upstream = await fetch(`https://cdn.emulatorjs.org/stable/data${assetPath}`);
+    const upstream = await fetch(`https://cdn.emulatorjs.org/stable/data${assetPath}`, {
+      signal: AbortSignal.timeout(15000)
+    });
     if (!upstream.ok || !upstream.body) return response.sendStatus(upstream.status || 502);
     response.status(upstream.status);
     response.setHeader("Content-Type", upstream.headers.get("content-type") || "application/octet-stream");
@@ -100,13 +103,29 @@ app.delete("/api/games/upload/:uploadId", requireLocalLibrary, async (request, r
   response.sendStatus(204);
 });
 
+async function prepareGameDownload(gameId, response) {
+  const { game, filePath } = await gameLibrary.getGameDownload(gameId);
+  const { size } = await stat(filePath);
+  response.setHeader("Content-Type", "application/octet-stream");
+  response.setHeader("Content-Disposition", `attachment; filename="${game.filename}"`);
+  response.setHeader("Cache-Control", "no-store");
+  response.setHeader("X-Content-Type-Options", "nosniff");
+  response.setHeader("Content-Length", String(size));
+  return filePath;
+}
+
+app.head("/api/games/:id/download", async (request, response) => {
+  try {
+    await prepareGameDownload(request.params.id, response);
+    response.status(200).end();
+  } catch (error) {
+    response.status(error.status || 502).end();
+  }
+});
+
 app.get("/api/games/:id/download", async (request, response) => {
   try {
-    const { game, filePath } = await gameLibrary.getGameDownload(request.params.id);
-    response.setHeader("Content-Type", "application/octet-stream");
-    response.setHeader("Content-Disposition", `attachment; filename="${game.filename}"`);
-    response.setHeader("Cache-Control", "public, max-age=31536000, immutable");
-    response.setHeader("X-Content-Type-Options", "nosniff");
+    const filePath = await prepareGameDownload(request.params.id, response);
     createReadStream(filePath).on("error", () => response.destroy()).pipe(response);
   } catch (error) {
     response.status(error.status || 502).json({ error: error.message });

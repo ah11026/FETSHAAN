@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { GameLibrary, MAX_GAME_BYTES, UPLOAD_CHUNK_BYTES, gameLibraryValidation } from "../server/game-library.js";
@@ -40,8 +40,11 @@ test("local game uploads persist without a file-size cap or management key", asy
   const directory = await mkdtemp(path.join(tmpdir(), "klai-local-games-"));
   const library = new LocalGameLibrary({ directory });
   try {
+    await writeFile(path.join(directory, ".upload-123e4567-e89b-12d3-a456-426614174000"), Buffer.from([1]));
+    await writeFile(path.join(directory, "catalog.json.123e4567-e89b-12d3-a456-426614174000.tmp"), "{}");
     const initialLists = await Promise.all([library.list(), library.list()]);
     assert.deepEqual(initialLists.map(result => result.games.length), [0, 0]);
+    assert.deepEqual(await readdir(directory), ["catalog.json"]);
     const largeSession = await library.startUpload({
       name: "Large DS",
       system: "nds",

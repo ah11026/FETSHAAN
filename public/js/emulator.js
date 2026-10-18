@@ -35,6 +35,7 @@ function configureEmulator(suppliedGameUrl) {
   window.EJS_player = "#game";
   window.EJS_core = system;
   window.EJS_gameUrl = gameUrl.href;
+  window.EJS_CacheLimit = 0;
   window.EJS_pathtodata = "/emulator-data/";
   window.EJS_startOnLoaded = true;
   window.EJS_backgroundColor = "#000000";
