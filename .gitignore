@@ -1,4 +1,5 @@
 node_modules/
+data/games/
 .env
 .env.*
 !.env.example

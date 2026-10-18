@@ -53,20 +53,13 @@
 
       <section class="library-section" aria-labelledby="libraryTitle">
         <div class="section-heading library-heading">
-          <div><p class="eyebrow">ملفات في مستودعك</p><h2 id="libraryTitle">مكتبة الألعاب</h2></div>
+          <div><p class="eyebrow">ملفات على هذا الجهاز</p><h2 id="libraryTitle">مكتبة الألعاب</h2></div>
           <button class="icon-button" id="refreshLibrary" type="button" title="تحديث المكتبة" aria-label="تحديث المكتبة">↻</button>
         </div>
         <ul class="library-list" id="libraryList" aria-live="polite"><li class="library-empty">جارٍ تحميل المكتبة...</li></ul>
         <details class="library-manager">
-          <summary>إضافة لعبة إلى المستودع</summary>
+          <summary>إضافة لعبة إلى هذا الجهاز</summary>
           <div class="manager-body">
-            <label class="field full-field">مفتاح إدارة المكتبة
-              <input id="libraryKey" type="password" autocomplete="off" placeholder="مفتاح الإدارة الذي ضبطته في Render">
-            </label>
-            <div class="library-modes" role="group" aria-label="طريقة إضافة اللعبة">
-              <button class="active" type="button" data-library-mode="upload" aria-pressed="true">رفع من الجهاز</button>
-              <button type="button" data-library-mode="import" aria-pressed="false">استيراد من GitHub</button>
-            </div>
             <div class="form-grid">
               <label class="field">اسم اللعبة<input id="gameName" maxlength="80" required placeholder="اسم اللعبة"></label>
               <label class="field">النظام
@@ -76,21 +69,13 @@
               <label class="field">رابط نص الترخيص<input id="gameLicenseUrl" type="url" required placeholder="https://..."></label>
             </div>
             <div class="library-source-panel" id="uploadPanel">
-              <label class="field full-field">ملف اللعبة (حتى 250 ميغابايت)
+              <label class="field full-field">ملف اللعبة
                 <input id="gameFile" type="file" accept=".nes,.sfc,.smc,.n64,.z64,.v64,.bin,.cue,.iso,.chd,.pbp,.nds">
               </label>
-              <button class="primary-action" id="uploadGame" type="button">رفع وحفظ في GitHub</button>
-            </div>
-            <div class="library-source-panel" id="importPanel" hidden>
-              <div class="form-grid source-fields">
-                <label class="field">المستودع<input id="sourceRepository" placeholder="owner/repository"></label>
-                <label class="field">الفرع<input id="sourceBranch" value="main"></label>
-                <label class="field full-field">مسار الملف داخل المستودع<input id="sourcePath" placeholder="releases/homebrew.nes"></label>
-              </div>
-              <button class="primary-action" id="importGame" type="button">استيراد الملف إلى مستودعي</button>
+              <button class="primary-action" id="uploadGame" type="button">رفع وحفظ على هذا الجهاز</button>
             </div>
             <p class="library-status" id="libraryStatus" role="status" aria-live="polite"></p>
-            <p class="library-security-note">استخدم ملفات مسموحاً لك بإعادة توزيعها. يُحفظ مفتاح الإدارة في الذاكرة المؤقتة لهذه الصفحة فقط.</p>
+            <p class="library-security-note">استخدم ملفات مسموحاً لك بتشغيلها. تُحفظ الملفات على مساحة التخزين المتاحة للخادم.</p>
           </div>
         </details>
       </section>

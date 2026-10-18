@@ -27,15 +27,15 @@ function configureEmulator(suppliedGameUrl) {
     fail("رابط ملف اللعبة غير صالح.");
     return;
   }
-  if (!gameUrl || gameUrl.origin !== location.origin || !/^\/api\/games\/[a-f0-9-]+\/download$/.test(gameUrl.pathname) || !gameUrl.searchParams.has("ticket")) {
-    fail("يجب أن يكون رابط اللعبة مؤقتاً وصادراً عن مكتبة الموقع.");
+  if (!gameUrl || gameUrl.origin !== location.origin || !/^\/api\/games\/[a-f0-9-]+\/download$/.test(gameUrl.pathname)) {
+    fail("يجب أن يكون رابط اللعبة محلياً وصادراً عن مكتبة الجهاز.");
     return;
   }
 
   window.EJS_player = "#game";
   window.EJS_core = system;
   window.EJS_gameUrl = gameUrl.href;
-  window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+  window.EJS_pathtodata = "/emulator-data/";
   window.EJS_startOnLoaded = true;
   window.EJS_backgroundColor = "#000000";
   window.EJS_onGameStart = () => {

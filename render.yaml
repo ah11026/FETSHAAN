@@ -6,12 +6,3 @@ services:
     buildCommand: npm ci
     startCommand: npm start
     healthCheckPath: /health
-    envVars:
-      - key: GAME_LIBRARY_REPOSITORY
-        value: ah11026/klai
-      - key: GAME_LIBRARY_BRANCH
-        value: main
-      - key: GAME_LIBRARY_GITHUB_TOKEN
-        sync: false
-      - key: GAME_LIBRARY_ADMIN_KEY
-        sync: false

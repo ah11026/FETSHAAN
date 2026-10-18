@@ -7,6 +7,7 @@ const socket = io({
   reconnectionDelay: 500,
   reconnectionDelayMax: 5000
 });
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js").catch(() => {});
 const roomCode = new URLSearchParams(location.search).get("room");
 const status = document.querySelector("#status");
 const padStatus = document.querySelector("#padStatus");

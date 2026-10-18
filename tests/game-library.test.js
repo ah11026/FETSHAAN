@@ -1,9 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { GameLibrary, MAX_GAME_BYTES, UPLOAD_CHUNK_BYTES, gameLibraryValidation } from "../server/game-library.js";
+import { LocalGameLibrary } from "../server/local-game-library.js";
 import { mapRemoteAxis, mapRemoteInput, RemoteInputState } from "../public/js/emulator-controls.js";
 
 const { validateGameFile, validateLicense, validateSource } = gameLibraryValidation;
@@ -33,6 +34,46 @@ test("large uploads use ordered chunks and accept Nintendo DS files", async () =
   });
   await library.discardUpload(session.uploadId);
   assert.equal(library.pendingUploads.size, 0);
+});
+
+test("local game uploads persist without a file-size cap or management key", async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), "klai-local-games-"));
+  const library = new LocalGameLibrary({ directory });
+  try {
+    const initialLists = await Promise.all([library.list(), library.list()]);
+    assert.deepEqual(initialLists.map(result => result.games.length), [0, 0]);
+    const largeSession = await library.startUpload({
+      name: "Large DS",
+      system: "nds",
+      license: "MIT",
+      licenseUrl: "https://example.org/license",
+      filename: "large.nds",
+      size: MAX_GAME_BYTES + 1
+    });
+    assert.equal(largeSession.totalChunks, Math.ceil((MAX_GAME_BYTES + 1) / UPLOAD_CHUNK_BYTES));
+    await library.discardUpload(largeSession.uploadId);
+
+    const session = await library.startUpload({
+      name: "Local NES",
+      system: "nes",
+      license: "MIT",
+      licenseUrl: "https://example.org/license",
+      filename: "local.nes",
+      size: 3
+    });
+    await library.writeUploadChunk(session.uploadId, 0, Buffer.from([1, 2, 3]));
+    const game = await library.finishUpload(session.uploadId);
+
+    const restarted = new LocalGameLibrary({ directory });
+    const { games } = await restarted.list();
+    assert.equal(games.length, 1);
+    assert.equal(games[0].id, game.id);
+    assert.equal(games[0].downloadUrl, `/api/games/${game.id}/download`);
+    const stored = await restarted.getGameDownload(game.id);
+    assert.deepEqual(await readFile(stored.filePath), Buffer.from([1, 2, 3]));
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 });
 
 test("large Nintendo DS files are streamed as GitHub Release assets, not Git blobs", async () => {
